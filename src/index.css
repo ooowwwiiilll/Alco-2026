@@ -1,0 +1,745 @@
+@import 'tailwindcss';
+
+/* Disable native browser password reveal icons (Edge, Chrome, WebKit) so only custom white eye icon appears */
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear,
+input::-ms-reveal,
+input::-ms-clear {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
+}
+
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden !important;
+  display: none !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
+  margin: 0 !important;
+}
+
+@font-face {
+  font-family: 'Season Mix';
+  src: local('Season Mix'), local('SeasonMix-Regular');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Season Sans';
+  src: local('Season Sans'), local('SeasonSans-Regular'), local('SeasonSans');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Season Serif';
+  src: local('Season Serif'), local('SeasonSerif-Regular'), local('SeasonSerif');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+/* Season Sans Default Typography with 4% Letter Spacing */
+.font-season-sans,
+[class*='font-season-sans'] {
+  font-family:
+    'Season Sans',
+    'Plus Jakarta Sans',
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* Tools & Workspace UI (outside placed component section blocks) */
+.alco-tools-ui,
+.alco-tools-ui button,
+.alco-tools-ui input,
+.alco-tools-ui select,
+.alco-tools-ui textarea,
+.alco-tools-ui label {
+  font-family:
+    'Season Sans',
+    'Plus Jakarta Sans',
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* Simplified Unified Type Scale (~50% Reduced Variant Sprawl) with 4% Tracking */
+.tool-title {
+  font-family: 'Season Sans', 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+}
+
+.tool-body {
+  font-family: 'Season Sans', 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.tool-body-bold {
+  font-family: 'Season Sans', 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.tool-caption {
+  font-family: 'Season Sans', 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.tool-caption-bold {
+  font-family: 'Season Sans', 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.font-season-mix {
+  font-family: 'Season Mix', 'DM Serif Display', 'Playfair Display', Georgia, serif;
+}
+
+.font-season-serif {
+  font-family: 'Season Serif', 'Playfair Display', 'DM Serif Display', Georgia, serif;
+}
+
+.font-lora {
+  font-family: 'Lora', Georgia, serif;
+}
+
+.font-jenius {
+  font-family:
+    'Geist',
+    'Season Sans',
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.font-geist {
+  font-family:
+    'Geist',
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    sans-serif !important;
+}
+
+/* Force Geist font for all section components and editable elements */
+.hero-personal-desktop,
+.hero-personal-mobile,
+[data-editable],
+[data-editable-card] {
+  font-family:
+    'Geist',
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    sans-serif !important;
+}
+
+/* Alco Dark Matrix Dot Pattern */
+.bg-alco-dark {
+  background-color: #343434;
+}
+
+.bg-alco-canvas {
+  background-color: #353535;
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.4) 1.5px, transparent 1.5px);
+  background-size: 48px 48px;
+}
+
+/* On-Canvas Direct Inline Editable Element Styling */
+[data-editable],
+[data-canvas-editable='true'],
+[contenteditable='true'] {
+  transition:
+    outline 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  cursor: text !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+[data-editable]:hover,
+[data-canvas-editable='true']:hover,
+[contenteditable='true']:hover {
+  outline: 1.5px dashed #0d9488 !important;
+  outline-offset: 2px;
+  background-color: rgba(13, 148, 136, 0.08);
+  border-radius: 4px;
+}
+
+[data-editable]:focus,
+[data-editable]:focus-visible,
+[data-canvas-editable='true']:focus,
+[data-canvas-editable='true']:focus-visible,
+[contenteditable='true']:focus,
+[contenteditable='true']:focus-visible {
+  outline: 2px solid #0f766e !important;
+  outline-offset: 2px;
+  background-color: rgba(13, 148, 136, 0.14) !important;
+  border-radius: 4px;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
+  caret-color: #0f766e;
+}
+
+button[contenteditable='true'] {
+  cursor: text !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+img[data-editable],
+img[data-canvas-editable-img='true'] {
+  cursor: pointer !important;
+  transition:
+    transform 0.15s ease,
+    outline 0.15s ease,
+    opacity 0.15s ease;
+}
+
+img[data-editable]:hover,
+img[data-canvas-editable-img='true']:hover {
+  outline: 2px dashed #0d9488 !important;
+  outline-offset: 2px;
+  opacity: 0.92;
+  transform: scale(1.02);
+}
+
+/* Hero Search & Promo Widget Styles (Desktop & Mobile Specifics) */
+.hero-search-box {
+  width: 100%;
+  height: 100%;
+  padding: 12px 8px 8px 8px;
+  background: rgba(30.55, 30.55, 30.55, 0.2);
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+  border-bottom-right-radius: 40px;
+  border-bottom-left-radius: 40px;
+  outline: 0.5px #f7f7f7 solid;
+  outline-offset: -0.5px;
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.hero-promo-box {
+  align-self: stretch;
+  padding: 8px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.hero-promo-title {
+  color: white;
+  font-size: 16px;
+  font-family:
+    'Geist',
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.64px;
+  word-wrap: break-word;
+}
+
+.hero-carousel-secondary {
+  width: 19.19px;
+  height: 4.62px;
+  background: #ababab;
+  border-radius: 100px;
+}
+
+.hero-search-pill {
+  width: 100%;
+  height: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 200px;
+  outline: 1px #c4d700 solid;
+  outline-offset: -1px;
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  justify-content: space-between;
+  align-items: center;
+  display: inline-flex;
+}
+
+.hero-search-text {
+  color: white;
+  font-size: 14px;
+  font-family:
+    'Geist',
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-weight: 400;
+  word-wrap: break-word;
+}
+
+/* Mobile Specific Overrides: In real mobile viewports OR inside Canvas mobile preview frame */
+@media (max-width: 639px) {
+  .hero-search-box {
+    padding: 12px 8px !important;
+    border-radius: 24px !important;
+  }
+  .hero-promo-box {
+    padding: 4px 12px !important;
+  }
+  .hero-promo-title {
+    font-size: 12px !important;
+    line-height: 18px !important;
+    letter-spacing: 0.48px !important;
+  }
+  .hero-carousel-secondary {
+    width: 11.91px !important;
+  }
+  .hero-search-pill {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+  .hero-search-text {
+    opacity: 0.6 !important;
+    font-size: 12px !important;
+  }
+}
+
+.mobile-preview-frame .hero-search-box {
+  padding: 12px 8px !important;
+  border-radius: 24px !important;
+}
+.mobile-preview-frame .hero-promo-box {
+  padding: 4px 12px !important;
+}
+.mobile-preview-frame .hero-promo-title {
+  font-size: 12px !important;
+  line-height: 18px !important;
+  letter-spacing: 0.48px !important;
+}
+.mobile-preview-frame .hero-carousel-secondary {
+  width: 11.91px !important;
+}
+.mobile-preview-frame .hero-search-pill {
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+.mobile-preview-frame .hero-search-text {
+  opacity: 0.6 !important;
+  font-size: 12px !important;
+}
+
+@font-face {
+  font-family: 'Jenius Sans';
+  src: local('Plus Jakarta Sans'), local('PlusJakartaSans');
+  font-weight: 100 900;
+}
+
+/* SMBC Produk Digital, Daya, Hero Financial, Digital Channel, Story, Solution, Promo, Kurs, and Komitmen Sections (Responsive Desktop vs Mobile Switcher) */
+.pd-section-desktop,
+.daya-section-desktop,
+.hero-fin-desktop,
+.digital-ch-desktop,
+.story-section-desktop,
+.promo-section-desktop,
+.solution-section-desktop,
+.kurs-section-desktop,
+.komitmen-section-desktop,
+.wujudkan-section-desktop,
+.footer-smbc-desktop,
+.tabungan-hero-desktop,
+.hero-personal-desktop,
+.product-section-desktop,
+.tring-section-desktop,
+.gold-price-section-desktop,
+.for-you-section-desktop,
+.nama-section-desktop,
+.product-listing-desktop,
+.content-highlight-desktop,
+.footer-section-desktop {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.pd-section-mobile,
+.daya-section-mobile,
+.hero-fin-mobile,
+.digital-ch-mobile,
+.story-section-mobile,
+.promo-section-mobile,
+.solution-section-mobile,
+.kurs-section-mobile,
+.komitmen-section-mobile,
+.wujudkan-section-mobile,
+.footer-smbc-mobile,
+.tabungan-hero-mobile,
+.hero-personal-mobile,
+.product-section-mobile,
+.tring-section-mobile,
+.gold-price-section-mobile,
+.for-you-section-mobile,
+.articel-section-mobile,
+.article-section-mobile,
+.article-listing-mobile,
+.nama-section-mobile,
+.product-listing-mobile,
+.content-highlight-mobile,
+.footer-section-mobile {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .pd-section-desktop,
+  .daya-section-desktop,
+  .hero-fin-desktop,
+  .digital-ch-desktop,
+  .story-section-desktop,
+  .promo-section-desktop,
+  .solution-section-desktop,
+  .kurs-section-desktop,
+  .komitmen-section-desktop,
+  .wujudkan-section-desktop,
+  .footer-smbc-desktop,
+  .tabungan-hero-desktop,
+  .hero-personal-desktop,
+  .product-section-desktop,
+  .tring-section-desktop,
+  .gold-price-section-desktop,
+  .for-you-section-desktop,
+  .articel-section-desktop,
+  .article-section-desktop,
+  .article-listing-desktop,
+  .nama-section-desktop,
+  .product-listing-desktop,
+  .content-highlight-desktop,
+  .footer-section-desktop {
+    display: none !important;
+  }
+  .pd-section-mobile,
+  .daya-section-mobile,
+  .hero-fin-mobile,
+  .digital-ch-mobile,
+  .story-section-mobile,
+  .promo-section-mobile,
+  .solution-section-mobile,
+  .kurs-section-mobile,
+  .komitmen-section-mobile,
+  .wujudkan-section-mobile,
+  .footer-smbc-mobile,
+  .tabungan-hero-mobile,
+  .hero-personal-mobile,
+  .product-section-mobile,
+  .tring-section-mobile,
+  .gold-price-section-mobile,
+  .for-you-section-mobile,
+  .articel-section-mobile,
+  .article-section-mobile,
+  .article-listing-mobile,
+  .nama-section-mobile,
+  .product-listing-mobile,
+  .content-highlight-mobile,
+  .footer-section-mobile {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+}
+
+/* Desktop Preview Frame: ALWAYS force desktop layouts and hide mobile layouts */
+.desktop-preview-frame [class*='-desktop'],
+.desktop-preview-frame .nama-section-desktop,
+.desktop-preview-frame .product-listing-desktop {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+.desktop-preview-frame [class*='-mobile'],
+.desktop-preview-frame .nama-section-mobile,
+.desktop-preview-frame .product-listing-mobile {
+  display: none !important;
+}
+
+.mobile-preview-frame [class*='-desktop'],
+.mobile-preview-frame .pd-section-desktop,
+.mobile-preview-frame .daya-section-desktop,
+.mobile-preview-frame .hero-fin-desktop,
+.mobile-preview-frame .digital-ch-desktop,
+.mobile-preview-frame .story-section-desktop,
+.mobile-preview-frame .promo-section-desktop,
+.mobile-preview-frame .solution-section-desktop,
+.mobile-preview-frame .kurs-section-desktop,
+.mobile-preview-frame .komitmen-section-desktop,
+.mobile-preview-frame .wujudkan-section-desktop,
+.mobile-preview-frame .footer-smbc-desktop,
+.mobile-preview-frame .tabungan-hero-desktop,
+.mobile-preview-frame .hero-personal-desktop,
+.mobile-preview-frame .product-section-desktop,
+.mobile-preview-frame .tring-section-desktop,
+.mobile-preview-frame .gold-price-section-desktop,
+.mobile-preview-frame .for-you-section-desktop,
+.mobile-preview-frame .articel-section-desktop,
+.mobile-preview-frame .article-section-desktop,
+.mobile-preview-frame .article-listing-desktop,
+.mobile-preview-frame .nama-section-desktop,
+.mobile-preview-frame .product-listing-desktop,
+.mobile-preview-frame .content-highlight-desktop,
+.mobile-preview-frame .audience-section-desktop,
+.mobile-preview-frame .audience-image-section-desktop,
+.mobile-preview-frame .testimonial-section-desktop,
+.mobile-preview-frame .news-article-section-desktop,
+.mobile-preview-frame .report-section-desktop,
+.mobile-preview-frame .table-section-desktop,
+.mobile-preview-frame .content-list-section-desktop,
+.mobile-preview-frame .how-to-section-desktop,
+.mobile-preview-frame .accordion-section-desktop,
+.mobile-preview-frame .riplay-section-desktop,
+.mobile-preview-frame .cta-section-desktop,
+.mobile-preview-frame .send-message-section-desktop,
+.mobile-preview-frame .promo-section-desktop,
+.mobile-preview-frame .hero-pdp-section-desktop,
+.mobile-preview-frame .job-listing-section-desktop,
+.mobile-preview-frame .event-listing-section-desktop,
+.mobile-preview-frame .hero-pdp-2-section-desktop,
+.mobile-preview-frame .feat-landscape-section-desktop,
+.mobile-preview-frame .video-section-desktop,
+.mobile-preview-frame .product-catalog-section-desktop,
+.mobile-preview-frame .feature-section-desktop,
+.mobile-preview-frame .footer-section-desktop {
+  display: none !important;
+}
+.mobile-preview-frame [class*='-mobile'],
+.mobile-preview-frame .pd-section-mobile,
+.mobile-preview-frame .daya-section-mobile,
+.mobile-preview-frame .hero-fin-mobile,
+.mobile-preview-frame .digital-ch-mobile,
+.mobile-preview-frame .story-section-mobile,
+.mobile-preview-frame .promo-section-mobile,
+.mobile-preview-frame .solution-section-mobile,
+.mobile-preview-frame .kurs-section-mobile,
+.mobile-preview-frame .komitmen-section-mobile,
+.mobile-preview-frame .wujudkan-section-mobile,
+.mobile-preview-frame .footer-smbc-mobile,
+.mobile-preview-frame .tabungan-hero-mobile,
+.mobile-preview-frame .hero-personal-mobile,
+.mobile-preview-frame .product-section-mobile,
+.mobile-preview-frame .tring-section-mobile,
+.mobile-preview-frame .gold-price-section-mobile,
+.mobile-preview-frame .for-you-section-mobile,
+.mobile-preview-frame .articel-section-mobile,
+.mobile-preview-frame .article-section-mobile,
+.mobile-preview-frame .article-listing-mobile,
+.mobile-preview-frame .nama-section-mobile,
+.mobile-preview-frame .product-listing-mobile,
+.mobile-preview-frame .content-highlight-mobile,
+.mobile-preview-frame .audience-section-mobile,
+.mobile-preview-frame .audience-image-section-mobile,
+.mobile-preview-frame .testimonial-section-mobile,
+.mobile-preview-frame .news-article-section-mobile,
+.mobile-preview-frame .report-section-mobile,
+.mobile-preview-frame .table-section-mobile,
+.mobile-preview-frame .content-list-section-mobile,
+.mobile-preview-frame .how-to-section-mobile,
+.mobile-preview-frame .accordion-section-mobile,
+.mobile-preview-frame .riplay-section-mobile,
+.mobile-preview-frame .cta-section-mobile,
+.mobile-preview-frame .send-message-section-mobile,
+.mobile-preview-frame .job-listing-section-mobile,
+.mobile-preview-frame .footer-section-mobile {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+/* Article mobile slider styles */
+.article-mobile-slider {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x mandatory !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.article-mobile-slider::-webkit-scrollbar {
+  display: none !important;
+}
+.article-mobile-slider > * {
+  flex: 0 0 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  scroll-snap-align: start !important;
+  box-sizing: border-box !important;
+}
+
+/* Mobile Preview Frame Typography & Font Size Overrides */
+.mobile-preview-frame {
+  max-width: 375px !important;
+  overflow-x: hidden !important;
+}
+
+/* Headings in Mobile Preview use mobile proportion */
+.mobile-preview-frame h1 {
+  font-size: 28px !important;
+  line-height: 34px !important;
+  letter-spacing: -0.02em !important;
+}
+
+.mobile-preview-frame h2 {
+  font-size: 22px !important;
+  line-height: 28px !important;
+}
+
+.mobile-preview-frame h3 {
+  font-size: 18px !important;
+  line-height: 24px !important;
+}
+
+/* Override large desktop font classes inside mobile preview */
+.mobile-preview-frame .text-5xl,
+.mobile-preview-frame .text-6xl,
+.mobile-preview-frame .text-7xl,
+.mobile-preview-frame .text-\[72px\],
+.mobile-preview-frame .text-\[64px\],
+.mobile-preview-frame .text-\[48px\],
+.mobile-preview-frame .text-\[40px\] {
+  font-size: 28px !important;
+  line-height: 34px !important;
+}
+
+.mobile-preview-frame .text-4xl {
+  font-size: 24px !important;
+  line-height: 30px !important;
+}
+
+.mobile-preview-frame .text-3xl {
+  font-size: 22px !important;
+  line-height: 28px !important;
+}
+
+.mobile-preview-frame .leading-\[79\.20px\],
+.mobile-preview-frame .leading-\[64px\],
+.mobile-preview-frame .leading-\[57\.60px\] {
+  line-height: 34px !important;
+}
+
+/* Hero Section headline adjustments in mobile preview frame */
+.mobile-preview-frame [data-editable='hero-smbc-title'] {
+  font-size: 28px !important;
+  line-height: 34px !important;
+  max-width: 320px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Card & Image Action Overrides */
+[data-editable-card] {
+  cursor: pointer;
+}
+[data-editable-card]:hover {
+  outline: 2px dashed #0d9488 !important;
+  outline-offset: 2px;
+}
+[data-change-img] {
+  cursor: pointer !important;
+  user-select: none;
+}
+[data-change-img]:hover {
+  outline: 1.5px solid #bfd730 !important;
+}
+
+/* Custom Thin 2px Scrollbar Styling Across Entire Application */
+html,
+body,
+*,
+*::before,
+*::after {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(150, 150, 150, 0.45) transparent;
+}
+
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 2px !important;
+  height: 2px !important;
+}
+
+::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(150, 150, 150, 0.45) !important;
+  border-radius: 9999px !important;
+}
+
+::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(150, 150, 150, 0.8) !important;
+}
+
+/* Accordion details/summary reset for mobile footer */
+details > summary::-webkit-details-marker {
+  display: none !important;
+}
+details > summary {
+  list-style: none !important;
+  user-select: none;
+}
+details[open] .accordion-chevron {
+  transform: rotate(180deg);
+}
+.accordion-chevron {
+  transition: transform 0.2s ease-in-out;
+}

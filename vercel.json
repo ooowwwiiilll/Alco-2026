@@ -1,0 +1,14 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/preview/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/((?!assets/|.*\\.[^/]+$).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

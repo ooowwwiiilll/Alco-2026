@@ -1,0 +1,127 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function profile() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
+    function approved() { return signedIn() && profile().status == 'approved'; }
+    function manager() { return approved() && profile().role == 'manager'; }
+    function editor() { return approved() && profile().role in ['manager', 'admin']; }
+    function data() { return request.resource.data; }
+    function validRevision() {
+      return data().revision is int && data().revision ==
+        (resource == null || !('revision' in resource.data) ? 1 : resource.data.revision + 1);
+    }
+    function noCredentials() { return !data().keys().hasAny(['password', 'passwordHash', 'salt']); }
+    function releaseDoc(id) { return get(/databases/$(database)/documents/releases/$(id)).data; }
+    // Approved releases must be written together with their immutable snapshot.
+    function validPublication(id) {
+      return data().status in ['draft', 'in_review', 'approved', 'rejected'] &&
+        (data().status != 'approved' ||
+          getAfter(/databases/$(database)/documents/publishedReleases/$(id + '--' + string(data().revision))).data.manifest == data().manifest);
+    }
+
+    // Internal directory: approved users see colleagues (mentions, filters, notifications).
+    match /users/{id} {
+      allow get: if signedIn() && (request.auth.uid == id || approved());
+      allow list: if approved();
+      allow create: if signedIn() && request.auth.uid == id &&
+        data().keys().hasOnly(['id','email','name','role','status','division','title','createdAt','canAccessComponents','revision']) &&
+        data().id == id && data().email == request.auth.token.email &&
+        data().role == 'product' && data().status == 'pending' &&
+        data().canAccessComponents == false && data().revision == 1 && noCredentials();
+      allow update: if manager() && noCredentials() && validRevision() &&
+        data().id == id && data().email == resource.data.email &&
+        data().role in ['manager','admin','product'] && data().status in ['pending','approved','rejected'];
+      allow delete: if manager() && request.auth.uid != id;
+    }
+
+    // Read before sign-in (registration form, landing background).
+    match /divisions/{id} {
+      allow read: if true;
+      allow create, update: if manager() && validRevision();
+      allow delete: if manager();
+    }
+    match /publicConfig/{id} {
+      allow read: if true;
+      allow create, update: if manager() && validRevision();
+    }
+
+    match /appConfig/{id} {
+      allow read: if approved();
+      allow create, update: if editor() && validRevision();
+    }
+    match /customTemplates/{id} {
+      allow read: if approved();
+      allow create, update: if editor() && data().id == id && validRevision();
+      allow delete: if editor();
+    }
+    match /componentOverrides/{id} {
+      allow read: if approved();
+      allow create, update: if manager() && data().id == id && validRevision();
+      allow delete: if manager();
+    }
+    match /pageTemplates/{id} {
+      allow read: if approved();
+      allow create, update: if editor() && data().id == id && validRevision();
+      allow delete: if editor();
+    }
+
+    // Authors edit content and send it to review; reviewers (editors) change status only.
+    match /releases/{id} {
+      allow read: if approved();
+      allow create: if approved() && data().id == id && data().authorId == request.auth.uid &&
+        validRevision() && validPublication(id) &&
+        (data().status in ['draft', 'in_review'] || editor());
+      allow update: if approved() && data().id == id && data().authorId == resource.data.authorId &&
+        validRevision() && validPublication(id) && (
+          (resource.data.authorId == request.auth.uid && (data().status in ['draft', 'in_review'] || editor())) ||
+          (editor() && data().sections == resource.data.sections && data().name == resource.data.name)
+        );
+      allow delete: if approved() && (editor() || resource.data.authorId == request.auth.uid);
+    }
+    match /publishedReleases/{id} {
+      allow read: if approved();
+      allow create: if approved() && data().id == id && data().status == 'approved' &&
+        id == data().releaseId + '--' + string(data().revision) &&
+        getAfter(/databases/$(database)/documents/releases/$(data().releaseId)).data.status == 'approved' &&
+        getAfter(/databases/$(database)/documents/releases/$(data().releaseId)).data.revision == data().revision &&
+        getAfter(/databases/$(database)/documents/releases/$(data().releaseId)).data.manifest == data().manifest;
+      allow update, delete: if false;
+    }
+
+    // Product users only discuss their own releases.
+    match /releaseComments/{id} {
+      allow read: if approved();
+      allow create: if approved() && data().id == id && data().userId == request.auth.uid &&
+        data().text is string && data().text.size() > 0 && data().text.size() <= 2000 &&
+        (editor() || releaseDoc(data().releaseId).authorId == request.auth.uid);
+      allow update: if false;
+      allow delete: if approved() && (resource.data.userId == request.auth.uid ||
+        manager() || releaseDoc(resource.data.releaseId).authorId == request.auth.uid);
+    }
+    match /notifications/{id} {
+      allow read: if signedIn() && resource.data.recipientId == request.auth.uid;
+      allow create: if approved() && data().id == id && data().senderId == request.auth.uid &&
+        data().read == false && exists(/databases/$(database)/documents/users/$(data().recipientId));
+      allow update: if signedIn() && resource.data.recipientId == request.auth.uid &&
+        data().diff(resource.data).affectedKeys().hasOnly(['read', 'revision']) && validRevision();
+      allow delete: if signedIn() && resource.data.recipientId == request.auth.uid;
+    }
+    // Append-only audit trail; enable a TTL policy on `expireAt` (30-day retention).
+    match /activityLog/{id} {
+      allow read: if approved();
+      allow create: if approved() && data().id == id && data().actorId == request.auth.uid;
+      allow update, delete: if false;
+    }
+    match /mediaLibrary/{id} {
+      allow read: if approved();
+      allow create, update: if manager() && data().id == id && validRevision();
+      allow delete: if manager();
+    }
+    match /migrationBackups/{id} {
+      allow read, create: if editor();
+      allow update, delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
